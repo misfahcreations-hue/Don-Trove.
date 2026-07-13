@@ -68,16 +68,37 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
 
   document.addEventListener("click", (e) => {
-    const btn = document.getElementById("hamburgerBtn");
-    const dd  = document.getElementById("catDropdown");
-    if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) {
-      dd.classList.remove("open");
+    const catBtn = document.getElementById("hamburgerBtn");
+    const catDd  = document.getElementById("catDropdown");
+    if (catDd && catBtn && !catBtn.contains(e.target) && !catDd.contains(e.target)) {
+      catDd.classList.remove("open");
+    }
+
+    const searchBtn = document.getElementById("searchToggleBtn");
+    const searchDd   = document.getElementById("searchDropdown");
+    if (searchDd && searchBtn && !searchBtn.contains(e.target) && !searchDd.contains(e.target)) {
+      searchDd.classList.remove("open");
+      searchBtn.classList.remove("active");
     }
   });
 });
 
 function toggleCatMenu() {
   document.getElementById("catDropdown")?.classList.toggle("open");
+}
+
+// ── Search Dropdown (header icon) ─────────────────────────────────────────────
+function toggleSearchBar() {
+  const dd  = document.getElementById("searchDropdown");
+  const btn = document.getElementById("searchToggleBtn");
+  if (!dd) return;
+  const opening = !dd.classList.contains("open");
+  dd.classList.toggle("open", opening);
+  btn?.classList.toggle("active", opening);
+  if (opening) {
+    showView("shop");
+    setTimeout(() => document.getElementById("searchInput")?.focus(), 50);
+  }
 }
 
 // ── Load Products ─────────────────────────────────────────────────────────────
@@ -585,8 +606,6 @@ function showView(name) {
   document.querySelectorAll(".nav-btn:not(.cart-btn)").forEach(b => {
     b.classList.toggle("active", b.textContent.trim().toLowerCase().startsWith(name));
   });
-  const searchBar = document.getElementById("searchBar");
-  if (searchBar) searchBar.style.display = name === "shop" ? "" : "none";
   if (name === "cart") renderCart();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
