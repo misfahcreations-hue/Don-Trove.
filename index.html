@@ -11,6 +11,31 @@
   <link rel="dns-prefetch" href="https://i.ibb.co"/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ══ HERO MOBILE FIX ══ */
+    @media (max-width: 640px) {
+      .hero {
+        margin-top: 56px !important;
+        height: 200px !important;
+        min-height: 200px !important;
+        aspect-ratio: unset !important;
+        background-image: url('BG.png') !important;
+        background-size: cover !important;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        background-color: #F4B8C8 !important;
+      }
+      .hero-video {
+        display: block !important;
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        z-index: 0 !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -26,9 +51,24 @@
     <a class="brand" href="#"><span>Le Tresor De </span><i>Misfah</i></a>
   </div>
   <nav>
+    <div style="position:relative;">
+      <button class="nav-btn search-toggle-btn" id="searchToggleBtn" onclick="toggleSearchBar()" aria-label="Search gifts">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      <div class="search-dropdown" id="searchDropdown">
+        <div class="search-bar-wrap">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input class="search-bar" id="searchInput" type="text" placeholder="Search gifts…" oninput="filterProducts()">
+        </div>
+      </div>
+    </div>
     <button class="nav-btn about-btn" onclick="showView('about')">About ✦</button>
     <button class="nav-btn cart-btn" onclick="showView('cart')">
-      🛍️ Cart
+      <img src="heart-icon.png" class="cart-heart-icon" alt=""/> Cart
       <span class="cart-badge" id="cartBadge">0</span>
     </button>
   </nav>
@@ -36,22 +76,29 @@
 
 <!-- ══ HERO ══ -->
 <div class="hero">
-  <video class="hero-video" autoplay muted loop playsinline poster="BG.png">
-    <source src="hero.mp4" type="video/mp4">
+  <video class="hero-video" autoplay muted loop playsinline poster="BG.png" id="heroVideo">
+    <source src="HBG.mp4" type="video/mp4">
   </video>
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
 </div>
-
-<!-- ══ SEARCH TOOLBAR ══ -->
-<div class="tabs-wrap" id="searchBar">
-  <div class="search-bar-wrap">
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-    </svg>
-    <input class="search-bar" id="searchInput" type="text" placeholder="Search gifts…" oninput="filterProducts()">
-  </div>
-</div>
+<script>
+  // If video fails to load on mobile, make sure BG.png poster still shows
+  (function() {
+    var v = document.getElementById('heroVideo');
+    if (v) {
+      v.addEventListener('error', function() {
+        v.style.display = 'none';
+        var hero = v.closest ? v.closest('.hero') : v.parentElement;
+        if (hero) {
+          hero.style.backgroundImage = "url('BG.png')";
+          hero.style.backgroundSize = 'cover';
+          hero.style.backgroundPosition = 'center';
+        }
+      });
+    }
+  })();
+</script>
 
 <!-- ══ SHOP VIEW ══ -->
 <div class="view active" id="view-shop">
